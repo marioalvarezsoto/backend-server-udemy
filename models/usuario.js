@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var uniqueValidator = require('mongoose-unique-validator');
+const { Schema, model } = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
-var Schema = mongoose.Schema;
+// var Schema = mongoose.Schema;
 
 var rolesValidos = {
     values: ['ADMIN_ROLE', 'USER_ROLE'],
@@ -13,10 +13,17 @@ var usuarioSchema = new Schema({
     email: { type: String, unique: true, required: [true, 'El correo es requerido'] },
     password: { type: String, required: [true, 'La contraseña es requerido'] },
     img: { type: String, required: false },
-    role: { type: String, required: false, default: 'USER_ROLE', enum: rolesValidos },
+    role: { type: String, required: true, default: 'USER_ROLE', enum: rolesValidos },
+    google: { type: Boolean, required: false, default: false }
 
 });
 
-usuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe ser único' });
+usuarioSchema.method('toJSON', function() {
+    const { __v, _id, password, ...object } = this.toObject();
+    object.uid = _id;
+    return object;
+})
 
-module.exports = mongoose.model('Usuario', usuarioSchema);
+// usuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe ser único' });
+
+module.exports = model('Usuario', usuarioSchema);
