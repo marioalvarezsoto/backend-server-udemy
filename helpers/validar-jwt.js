@@ -1,11 +1,6 @@
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
-
-
-// ======================================
-// Verificar token
-// ======================================
 const validarJWT = (req, res, next) => {
 
     // Leer el token
@@ -32,23 +27,6 @@ const validarJWT = (req, res, next) => {
             msg: 'Token incorrecto'
         });
     }
-
-
-
-    // jwt.verify(token, SEED, (err, decoded) => {
-
-    //     if (err) {
-    //         return res.status(401).json({
-    //             ok: false,
-    //             mensaje: 'Token incorrecto',
-    //             errors: err
-    //         });
-    //     }
-    //     req.usuario = decoded.usuario;
-
-    //     next();
-
-    // });
 
 }
 
